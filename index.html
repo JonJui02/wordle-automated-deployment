@@ -3,151 +3,664 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CI/CD Pipeline Demo - Jonathan Juining</title>
+    <title>Wordle Game - By Jonathan Juining</title>
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
+
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        color: white;
+        padding: 20px;
       }
+
       .container {
-        text-align: center;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 60px;
+        max-width: 500px;
+        width: 100%;
+        background: white;
         border-radius: 20px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        max-width: 800px;
+        padding: 30px;
+        box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
       }
-      h1 {
-        font-size: 3em;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      }
-      .subtitle {
-        font-size: 1.3em;
+
+      header {
+        text-align: center;
         margin-bottom: 30px;
-        opacity: 0.9;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
       }
-      .badges {
+
+      h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 1em;
+      }
+
+      .stats {
         display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 10px;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      .game-board {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 30px;
+      }
+
+      .row {
+        display: flex;
+        gap: 5px;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin: 30px 0;
       }
-      .badge {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 12px 24px;
-        border-radius: 25px;
-        font-size: 1em;
-        font-weight: 600;
-        transition: transform 0.3s ease;
-      }
-      .badge:hover {
-        transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.3);
-      }
-      .features {
-        margin-top: 40px;
-        text-align: left;
-        display: inline-block;
-      }
-      .feature {
-        margin: 15px 0;
-        font-size: 1.1em;
-      }
-      .feature::before {
-        content: "✅ ";
-        margin-right: 10px;
-      }
-      .footer {
-        margin-top: 40px;
-        font-size: 1em;
-        opacity: 0.8;
-      }
-      .cta {
-        margin-top: 30px;
-      }
-      .button {
-        display: inline-block;
-        padding: 15px 30px;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 30px;
-        text-decoration: none;
-        color: white;
-        font-weight: 600;
+
+      .tile {
+        width: 62px;
+        height: 62px;
+        border: 2px solid #d3d6da;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        font-weight: bold;
+        color: #333;
+        text-transform: uppercase;
+        background: white;
         transition: all 0.3s ease;
-        border: 2px solid rgba(255, 255, 255, 0.5);
       }
-      .button:hover {
-        background: rgba(255, 255, 255, 0.5);
+
+      .tile.filled {
+        border-color: #878a8c;
+        animation: pop 0.1s ease;
+      }
+
+      .tile.correct {
+        background: #6aaa64;
+        border-color: #6aaa64;
+        color: white;
+        animation: flip 0.5s ease;
+      }
+
+      .tile.present {
+        background: #c9b458;
+        border-color: #c9b458;
+        color: white;
+        animation: flip 0.5s ease;
+      }
+
+      .tile.absent {
+        background: #787c7e;
+        border-color: #787c7e;
+        color: white;
+        animation: flip 0.5s ease;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes flip {
+        0% {
+          transform: rotateX(0);
+        }
+        50% {
+          transform: rotateX(90deg);
+        }
+        100% {
+          transform: rotateX(0);
+        }
+      }
+
+      .keyboard {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .keyboard-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+
+      .key {
+        min-width: 43px;
+        height: 58px;
+        border: none;
+        border-radius: 4px;
+        background: #d3d6da;
+        color: #333;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.1s ease;
+        text-transform: uppercase;
+        padding: 0 10px;
+      }
+
+      .key:hover {
+        background: #b3b6ba;
+      }
+
+      .key:active {
+        transform: scale(0.95);
+      }
+
+      .key.correct {
+        background: #6aaa64;
+        color: white;
+      }
+
+      .key.present {
+        background: #c9b458;
+        color: white;
+      }
+
+      .key.absent {
+        background: #787c7e;
+        color: white;
+      }
+
+      .key.large {
+        min-width: 65px;
+        font-size: 0.9em;
+      }
+
+      .message {
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-weight: bold;
+        display: none;
+        z-index: 1000;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        text-align: center;
+        max-width: 400px;
+        animation: scaleIn 0.3s ease;
+      }
+
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .modal h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 2em;
+      }
+
+      .modal p {
+        color: #666;
+        margin-bottom: 20px;
+        font-size: 1.2em;
+      }
+
+      .modal button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .modal button:hover {
+        background: #5568d3;
         transform: scale(1.05);
+      }
+
+      .footer {
+        margin-top: 30px;
+        text-align: center;
+        color: white;
+        padding: 20px;
+      }
+
+      .footer a {
+        color: #ffd700;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 500px) {
+        .tile {
+          width: 52px;
+          height: 52px;
+          font-size: 1.5em;
+        }
+
+        .key {
+          min-width: 30px;
+          height: 50px;
+          font-size: 0.9em;
+        }
+
+        .key.large {
+          min-width: 50px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>🚀 CI/CD Pipeline Demo</h1>
-      <p class="subtitle">Automated Testing, Building & Deployment</p>
+      <header>
+        <h1>🎮 WORDLE</h1>
+        <p class="subtitle">Guess the 5-letter word in 6 tries</p>
+      </header>
 
-      <div class="badges">
-        <div class="badge">GitHub Actions</div>
-        <div class="badge">Docker</div>
-        <div class="badge">Automated Testing</div>
-        <div class="badge">Security Scanning</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value" id="gamesPlayed">0</div>
+          <div class="stat-label">Played</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="winRate">0%</div>
+          <div class="stat-label">Win Rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="currentStreak">0</div>
+          <div class="stat-label">Streak</div>
+        </div>
       </div>
 
-      <div class="features">
-        <div class="feature">Automated code testing on every commit</div>
-        <div class="feature">Docker container builds and publishing</div>
-        <div class="feature">Security vulnerability scanning</div>
-        <div class="feature">Automatic deployment to GitHub Pages</div>
-        <div class="feature">Build status badges and notifications</div>
-        <div class="feature">Multi-environment support (dev/staging/prod)</div>
-      </div>
+      <div class="game-board" id="gameBoard"></div>
 
-      <div class="cta">
-        <a
-          href="https://github.com/YOUR-USERNAME/devops-cicd-pipeline-demo"
-          class="button"
-          target="_blank"
-        >
-          View on GitHub
-        </a>
-      </div>
+      <div class="keyboard" id="keyboard"></div>
+    </div>
 
-      <div class="footer">
-        Built by Jonathan Juining | Software Engineer | CKA Certified<br />
-        Demonstrating DevOps & CI/CD Expertise
+    <div class="message" id="message"></div>
+
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">🎉 You Won!</h2>
+        <p id="modalMessage">Great job!</p>
+        <button onclick="resetGame()">Play Again</button>
       </div>
     </div>
 
+    <div class="footer">
+      <p>Built by <strong>Jonathan Juining</strong> | Software Engineer</p>
+      <p style="margin-top: 10px">
+        <a
+          href="https://github.com/FriesKnight/devops-cicd-pipeline-demo"
+          target="_blank"
+        >
+          View CI/CD Pipeline on GitHub →
+        </a>
+      </p>
+    </div>
+
     <script>
-      // Add simple animation
-      document.addEventListener("DOMContentLoaded", function () {
-        const badges = document.querySelectorAll(".badge");
-        badges.forEach((badge, index) => {
-          setTimeout(() => {
-            badge.style.opacity = "0";
-            badge.style.transform = "translateY(-20px)";
-            setTimeout(() => {
-              badge.style.transition = "all 0.5s ease";
-              badge.style.opacity = "1";
-              badge.style.transform = "translateY(0)";
-            }, 50);
-          }, index * 100);
+      const WORDS = [
+        "CRANE",
+        "SLATE",
+        "AUDIO",
+        "SPORT",
+        "BREAK",
+        "PLANT",
+        "STORM",
+        "DANCE",
+        "TEACH",
+        "ROUND",
+        "PARTY",
+        "SHARK",
+        "BEACH",
+        "TRAIN",
+        "FRUIT",
+        "BLANK",
+        "DREAM",
+        "SMART",
+        "CLIMB",
+        "QUIET",
+        "BRAIN",
+        "HEART",
+        "MONEY",
+        "POWER",
+        "WORLD",
+        "PIZZA",
+        "SOLAR",
+        "ROBOT",
+        "CLOUD",
+        "PIXEL",
+        "MAGIC",
+        "QUEEN",
+        "KNIGHT",
+        "TIGER",
+        "OCEAN",
+        "MOUNT",
+        "RIVER",
+        "LIGHT",
+        "MOUSE",
+        "PHONE",
+      ];
+
+      const KEYBOARD_LAYOUT = [
+        ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+        ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+        ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
+      ];
+
+      let targetWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+      let currentRow = 0;
+      let currentTile = 0;
+      let gameOver = false;
+      let stats = JSON.parse(localStorage.getItem("wordleStats")) || {
+        gamesPlayed: 0,
+        gamesWon: 0,
+        currentStreak: 0,
+        maxStreak: 0,
+      };
+
+      function initGame() {
+        createBoard();
+        createKeyboard();
+        updateStats();
+      }
+
+      function createBoard() {
+        const board = document.getElementById("gameBoard");
+        for (let i = 0; i < 6; i++) {
+          const row = document.createElement("div");
+          row.className = "row";
+          for (let j = 0; j < 5; j++) {
+            const tile = document.createElement("div");
+            tile.className = "tile";
+            tile.id = `tile-${i}-${j}`;
+            row.appendChild(tile);
+          }
+          board.appendChild(row);
+        }
+      }
+
+      function createKeyboard() {
+        const keyboard = document.getElementById("keyboard");
+        KEYBOARD_LAYOUT.forEach((row) => {
+          const keyboardRow = document.createElement("div");
+          keyboardRow.className = "keyboard-row";
+          row.forEach((key) => {
+            const button = document.createElement("button");
+            button.className = key.length > 1 ? "key large" : "key";
+            button.textContent = key;
+            button.id = `key-${key}`;
+            button.onclick = () => handleKeyPress(key);
+            keyboardRow.appendChild(button);
+          });
+          keyboard.appendChild(keyboardRow);
         });
+      }
+
+      function handleKeyPress(key) {
+        if (gameOver) return;
+
+        if (key === "ENTER") {
+          submitGuess();
+        } else if (key === "⌫") {
+          deleteLetter();
+        } else if (currentTile < 5) {
+          addLetter(key);
+        }
+      }
+
+      function addLetter(letter) {
+        const tile = document.getElementById(
+          `tile-${currentRow}-${currentTile}`
+        );
+        tile.textContent = letter;
+        tile.classList.add("filled");
+        currentTile++;
+      }
+
+      function deleteLetter() {
+        if (currentTile > 0) {
+          currentTile--;
+          const tile = document.getElementById(
+            `tile-${currentRow}-${currentTile}`
+          );
+          tile.textContent = "";
+          tile.classList.remove("filled");
+        }
+      }
+
+      function submitGuess() {
+        if (currentTile < 5) {
+          showMessage("Not enough letters");
+          return;
+        }
+
+        let guess = "";
+        for (let i = 0; i < 5; i++) {
+          const tile = document.getElementById(`tile-${currentRow}-${i}`);
+          guess += tile.textContent;
+        }
+
+        // Check each letter
+        const targetArray = targetWord.split("");
+        const guessArray = guess.split("");
+        const letterStatus = new Array(5).fill("absent");
+
+        // First pass: check correct positions
+        for (let i = 0; i < 5; i++) {
+          if (guessArray[i] === targetArray[i]) {
+            letterStatus[i] = "correct";
+            targetArray[i] = null;
+          }
+        }
+
+        // Second pass: check present letters
+        for (let i = 0; i < 5; i++) {
+          if (letterStatus[i] === "correct") continue;
+          const index = targetArray.indexOf(guessArray[i]);
+          if (index !== -1) {
+            letterStatus[i] = "present";
+            targetArray[index] = null;
+          }
+        }
+
+        // Apply colors with delay
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const tile = document.getElementById(`tile-${currentRow}-${i}`);
+            tile.classList.add(letterStatus[i]);
+            updateKeyColor(guessArray[i], letterStatus[i]);
+          }, i * 300);
+        }
+
+        // Check win/lose after animation
+        setTimeout(() => {
+          if (guess === targetWord) {
+            gameOver = true;
+            stats.gamesPlayed++;
+            stats.gamesWon++;
+            stats.currentStreak++;
+            stats.maxStreak = Math.max(stats.maxStreak, stats.currentStreak);
+            saveStats();
+            updateStats();
+            showModal("🎉 You Won!", `Great job! The word was ${targetWord}`);
+          } else if (currentRow === 5) {
+            gameOver = true;
+            stats.gamesPlayed++;
+            stats.currentStreak = 0;
+            saveStats();
+            updateStats();
+            showModal("😔 Game Over", `The word was ${targetWord}`);
+          } else {
+            currentRow++;
+            currentTile = 0;
+          }
+        }, 1500);
+      }
+
+      function updateKeyColor(letter, status) {
+        const key = document.getElementById(`key-${letter}`);
+        if (!key) return;
+
+        const currentStatus = key.className.split(" ")[1];
+        if (currentStatus === "correct") return;
+        if (currentStatus === "present" && status === "absent") return;
+
+        key.classList.remove("correct", "present", "absent");
+        key.classList.add(status);
+      }
+
+      function showMessage(text) {
+        const message = document.getElementById("message");
+        message.textContent = text;
+        message.style.display = "block";
+        setTimeout(() => {
+          message.style.display = "none";
+        }, 2000);
+      }
+
+      function showModal(title, message) {
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalMessage").textContent = message;
+        document.getElementById("modal").style.display = "flex";
+      }
+
+      function updateStats() {
+        document.getElementById("gamesPlayed").textContent = stats.gamesPlayed;
+        const winRate =
+          stats.gamesPlayed > 0
+            ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100)
+            : 0;
+        document.getElementById("winRate").textContent = winRate + "%";
+        document.getElementById("currentStreak").textContent =
+          stats.currentStreak;
+      }
+
+      function saveStats() {
+        localStorage.setItem("wordleStats", JSON.stringify(stats));
+      }
+
+      function resetGame() {
+        document.getElementById("modal").style.display = "none";
+        targetWord = WORDS[Math.floor(Math.random() * WORDS.length)];
+        currentRow = 0;
+        currentTile = 0;
+        gameOver = false;
+
+        // Clear board
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 5; j++) {
+            const tile = document.getElementById(`tile-${i}-${j}`);
+            tile.textContent = "";
+            tile.className = "tile";
+          }
+        }
+
+        // Clear keyboard colors
+        KEYBOARD_LAYOUT.flat().forEach((key) => {
+          const keyEl = document.getElementById(`key-${key}`);
+          if (keyEl) {
+            keyEl.className = key.length > 1 ? "key large" : "key";
+          }
+        });
+      }
+
+      // Physical keyboard support
+      document.addEventListener("keydown", (e) => {
+        if (gameOver) return;
+
+        if (e.key === "Enter") {
+          handleKeyPress("ENTER");
+        } else if (e.key === "Backspace") {
+          handleKeyPress("⌫");
+        } else if (/^[a-zA-Z]$/.test(e.key)) {
+          handleKeyPress(e.key.toUpperCase());
+        }
       });
+
+      // Initialize game
+      initGame();
     </script>
   </body>
 </html>
