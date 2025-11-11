@@ -950,18 +950,56 @@ const VALID_WORDS = new Set([
    Release Notes Configuration
    Update version when you make changes to show users what's new
    ============================================ */
+/* ============================================
+   Version History - Expandable Sections
+   Each version can be expanded/collapsed
+   ============================================ */
+const VERSION_HISTORY = [
+  {
+    version: "1.1.0",
+    date: "November 12, 2025",
+    title: "Bulletproof Input & Smart Validation",
+    expanded: true, // Show by default on first load
+    features: [
+      "🔒 Smart Word Validation - 170,000+ words via API with intelligent caching",
+      "🛡️ Bulletproof Input Handling - Fixed Enter spam bug with multi-layer protection",
+      "⚡ Lightning-Fast Performance - 0-5ms cached lookups, API fallback",
+      "📋 Release Notes - Stay updated on new features and improvements",
+      "🎯 Better UX - Smoother animations and error handling",
+      "🔧 Clean Code - Modular architecture for easier maintenance",
+    ],
+  },
+  {
+    version: "1.0.5",
+    date: "November 5, 2025",
+    title: "Performance & Stability Updates",
+    expanded: false,
+    features: [
+      "⚡ Optimized game board rendering",
+      "🐛 Fixed keyboard event handling",
+      "💾 Improved stats persistence",
+      "🎨 Refined color schemes",
+    ],
+  },
+  {
+    version: "1.0.0",
+    date: "October 28, 2025",
+    title: "Initial Release",
+    expanded: false,
+    features: [
+      "🎮 Full Wordle gameplay with 6 attempts",
+      "⌨️ Virtual and physical keyboard support",
+      "📊 Game statistics tracking",
+      "💾 Local storage persistence",
+      "🎨 Beautiful UI with animations",
+    ],
+  },
+];
+
 const RELEASE_NOTES = {
-  version: "1.1.0",
-  date: "November 12, 2025",
-  title: "🎉 What's New in Version 1.1.0",
-  notes: [
-    "🔒 <strong>Smart Word Validation:</strong> Only valid English words accepted. Uses Free Dictionary API with intelligent caching and automatic fallback. Supports 170,000+ words including all standard English vocabulary.",
-    "🛡️ <strong>Bulletproof Input Handling:</strong> Fixed critical bug where spamming Enter key could corrupt game state. Implemented triple-layer protection with async locks and animation safety to prevent race conditions.",
-    "⚡ <strong>Lightning-Fast Performance:</strong> First validation (200-500ms) uses API. Subsequent validations (0-5ms) use local cache. Automatic fallback ensures game works even if API is unavailable.",
-    "📋 <strong>Release Notes:</strong> New release notes modal displays on first launch and major updates to keep players informed about features and improvements.",
-    "🎯 <strong>Improved User Experience:</strong> Better error messages, smooth animations, and consistent game state. All edge cases handled gracefully.",
-    "🔧 <strong>Code Architecture:</strong> Refactored for maintainability with modular files (game.js, config.js, styles.css) and comprehensive input validation system.",
-  ],
+  currentVersion: "1.1.0",
+  title: "🎉 What's New",
+  versionHistory: VERSION_HISTORY,
 };
 
 /* ============================================

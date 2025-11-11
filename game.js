@@ -299,11 +299,50 @@ function showReleaseNotes() {
   const contentEl = document.getElementById("releaseNotesContent");
 
   titleEl.textContent = RELEASE_NOTES.title;
-  contentEl.innerHTML = RELEASE_NOTES.notes
-    .map((note) => `<div style="margin-bottom: 12px;">• ${note}</div>`)
+
+  // Render version history as collapsible sections
+  contentEl.innerHTML = RELEASE_NOTES.versionHistory
+    .map(
+      (versionInfo, index) => `
+    <div class="version-section">
+      <div class="version-header ${
+        versionInfo.expanded ? "expanded" : ""
+      }" onclick="toggleVersionSection(this, ${index})">
+        <button class="version-toggle" data-expanded="${versionInfo.expanded}">
+          ${versionInfo.expanded ? "−" : "+"}
+        </button>
+        <div class="version-info">
+          <div class="version-number">v${versionInfo.version}</div>
+          <div class="version-title">${versionInfo.title}</div>
+          <div class="version-date">${versionInfo.date}</div>
+        </div>
+      </div>
+      <div class="version-features ${!versionInfo.expanded ? "collapsed" : ""}">
+        ${versionInfo.features
+          .map((feature) => `<div class="version-feature">${feature}</div>`)
+          .join("")}
+      </div>
+    </div>
+  `
+    )
     .join("");
 
   modal.style.display = "flex";
+}
+
+function toggleVersionSection(headerEl, versionIndex) {
+  const versionInfo = RELEASE_NOTES.versionHistory[versionIndex];
+  const featuresEl = headerEl.nextElementSibling;
+  const toggleBtn = headerEl.querySelector(".version-toggle");
+
+  // Toggle state
+  versionInfo.expanded = !versionInfo.expanded;
+
+  // Update UI
+  headerEl.classList.toggle("expanded");
+  featuresEl.classList.toggle("collapsed");
+  toggleBtn.textContent = versionInfo.expanded ? "−" : "+";
+  toggleBtn.dataset.expanded = versionInfo.expanded;
 }
 
 function closeReleaseNotes() {
@@ -313,7 +352,7 @@ function closeReleaseNotes() {
   if (dontShowAgain.checked) {
     localStorage.setItem(
       STORAGE_KEYS.RELEASE_NOTES_VERSION,
-      RELEASE_NOTES.version
+      RELEASE_NOTES.currentVersion
     );
   }
 
@@ -326,7 +365,7 @@ function checkAndShowReleaseNotes() {
   );
 
   // Show release notes only if new version or first time
-  if (lastSeenVersion !== RELEASE_NOTES.version) {
+  if (lastSeenVersion !== RELEASE_NOTES.currentVersion) {
     setTimeout(() => {
       showReleaseNotes();
     }, GAME_CONFIG.RELEASE_NOTES_DELAY);
