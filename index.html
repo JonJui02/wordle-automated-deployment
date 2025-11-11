@@ -55,49 +55,25 @@
     </div>
 
     <div class="modal" id="releaseNotesModal">
-      <div class="modal-content" style="text-align: left; max-width: 500px">
-        <h2 id="releaseNotesTitle">🎉 What's New</h2>
-        <div
-          id="releaseNotesContent"
-          style="
-            margin: 20px 0;
-            color: #666;
-            font-size: 0.95em;
-            line-height: 1.6;
-          "
-        ></div>
-        <div
-          style="
-            margin: 20px 0;
-            padding: 15px;
-            background: #f5f5f5;
-            border-radius: 8px;
-          "
-        >
-          <label style="display: flex; align-items: center; cursor: pointer">
-            <input
-              type="checkbox"
-              id="dontShowAgain"
-              style="cursor: pointer; margin-right: 10px"
-            />
-            <span style="color: #333">Don't show this again</span>
-          </label>
-        </div>
+      <div class="modal-content release-notes-modal">
         <button
+          class="modal-close-btn"
           onclick="closeReleaseNotes()"
-          style="
-            width: 100%;
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-          "
+          title="Close"
         >
-          Got it!
+          ✕
         </button>
+        <h2 id="releaseNotesTitle">🎉 What's New</h2>
+        <div class="release-notes-content" id="releaseNotesContent"></div>
+        <div class="release-notes-footer">
+          <label class="checkbox-label">
+            <input type="checkbox" id="dontShowAgain" />
+            <span>Don't show again</span>
+          </label>
+          <button class="release-notes-btn" onclick="closeReleaseNotes()">
+            Got it!
+          </button>
+        </div>
       </div>
     </div>
 

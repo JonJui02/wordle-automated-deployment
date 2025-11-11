@@ -324,6 +324,8 @@ h1 {
   z-index: 2000;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
 }
 
 .modal-content {
@@ -333,21 +335,24 @@ h1 {
   text-align: center;
   max-width: 400px;
   animation: scaleIn 0.3s ease;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal h2 {
+.modal-content h2 {
   color: #333;
   margin-bottom: 20px;
   font-size: 2em;
 }
 
-.modal p {
+.modal-content p {
   color: #666;
   margin-bottom: 20px;
   font-size: 1.2em;
 }
 
-.modal button {
+.modal-content button:not(.modal-close-btn) {
   background: #667eea;
   color: white;
   border: none;
@@ -359,9 +364,232 @@ h1 {
   transition: all 0.3s ease;
 }
 
-.modal button:hover {
+.modal-content button:not(.modal-close-btn):hover {
   background: #5568d3;
   transform: scale(1.05);
+}
+
+/* ============================================
+   Release Notes Modal - Scrollable Content
+   ============================================ */
+.release-notes-modal {
+  max-width: 500px;
+  position: relative;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #f0f0f0;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #666;
+}
+
+.modal-close-btn:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.release-notes-content {
+  flex: 1;
+  overflow-y: auto;
+  margin: 15px 0;
+  color: #666;
+  font-size: 0.95em;
+  line-height: 1.6;
+  text-align: left;
+  max-height: 40vh;
+  padding-right: 8px;
+}
+
+.release-notes-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.release-notes-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.release-notes-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.release-notes-content::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+.release-notes-content > div {
+  margin-bottom: 10px;
+}
+
+/* ============================================
+   Accordion/Collapsible Version Sections
+   ============================================ */
+.version-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.version-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f5 100%);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.version-header:hover {
+  background: linear-gradient(135deg, #eef0f5 0%, #e9ecf1 100%);
+}
+
+.version-header.expanded {
+  border-bottom: 1px solid #667eea;
+}
+
+.version-toggle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #667eea;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+.version-toggle:hover {
+  background: #5568d3;
+  transform: scale(1.1);
+}
+
+.version-toggle:active {
+  transform: scale(0.95);
+}
+
+.version-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.version-number {
+  font-weight: bold;
+  color: #333;
+  font-size: 1em;
+}
+
+.version-title {
+  color: #666;
+  font-size: 0.85em;
+}
+
+.version-date {
+  color: #999;
+  font-size: 0.8em;
+  margin-top: 2px;
+}
+
+.version-features {
+  max-height: 500px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  padding: 12px 15px;
+  background: #fafbfc;
+}
+
+.version-features.collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding: 0 15px;
+}
+
+.version-feature {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 0.9em;
+  line-height: 1.5;
+  padding-left: 8px;
+  border-left: 2px solid #667eea;
+  padding-left: 12px;
+}
+
+.version-feature:last-child {
+  margin-bottom: 0;
+}
+
+.release-notes-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-top: auto;
+  border-top: 1px solid #e0e0e0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #667eea;
+}
+
+.release-notes-btn {
+  width: 100%;
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1em;
+  transition: all 0.2s ease;
+}
+
+.release-notes-btn:hover {
+  background: #5568d3;
+}
+
+.release-notes-btn:active {
+  transform: scale(0.98);
 }
 
 /* ============================================
@@ -469,6 +697,7 @@ h1 {
     padding: 25px;
     margin: 20px;
     max-width: 90%;
+    max-height: 80vh;
   }
 
   .modal h2 {
@@ -481,9 +710,74 @@ h1 {
     margin-bottom: 15px;
   }
 
-  .modal button {
+  .modal button:not(.modal-close-btn) {
     padding: 12px 30px;
     font-size: 1em;
+  }
+
+  .modal-close-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1em;
+    top: 10px;
+    right: 10px;
+  }
+
+  .release-notes-content {
+    max-height: 35vh;
+    font-size: 0.9em;
+    padding-right: 6px;
+  }
+
+  .release-notes-footer {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .checkbox-label {
+    font-size: 0.85em;
+  }
+
+  .release-notes-btn {
+    padding: 10px;
+    font-size: 0.95em;
+  }
+
+  .version-section {
+    margin-bottom: 10px;
+  }
+
+  .version-header {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .version-toggle {
+    width: 26px;
+    height: 26px;
+    font-size: 1.1em;
+  }
+
+  .version-number {
+    font-size: 0.95em;
+  }
+
+  .version-title {
+    font-size: 0.8em;
+  }
+
+  .version-date {
+    font-size: 0.75em;
+  }
+
+  .version-features {
+    padding: 10px 12px;
+    max-height: 300px;
+  }
+
+  .version-feature {
+    margin-bottom: 6px;
+    font-size: 0.85em;
   }
 
   .footer {
@@ -531,5 +825,92 @@ h1 {
 
   .stat {
     padding: 8px;
+  }
+
+  .modal {
+    padding: 10px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    margin: 0;
+    max-width: 100%;
+    max-height: 85vh;
+  }
+
+  .modal h2 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+  }
+
+  .modal-close-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 0.9em;
+  }
+
+  .release-notes-content {
+    max-height: 30vh;
+    font-size: 0.85em;
+    line-height: 1.5;
+    margin: 10px 0;
+  }
+
+  .release-notes-footer {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .checkbox-label {
+    font-size: 0.8em;
+    gap: 8px;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  .release-notes-btn {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  .version-section {
+    margin-bottom: 8px;
+  }
+
+  .version-header {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .version-toggle {
+    width: 24px;
+    height: 24px;
+    font-size: 1em;
+  }
+
+  .version-number {
+    font-size: 0.9em;
+  }
+
+  .version-title {
+    font-size: 0.75em;
+  }
+
+  .version-date {
+    font-size: 0.7em;
+  }
+
+  .version-features {
+    padding: 8px 10px;
+    max-height: 250px;
+  }
+
+  .version-feature {
+    margin-bottom: 5px;
+    font-size: 0.8em;
+    padding-left: 10px;
   }
 }
