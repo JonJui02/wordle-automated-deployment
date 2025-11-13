@@ -32,13 +32,62 @@ A production-ready web application featuring an interactive Wordle game, deploye
 
 This project demonstrates modern DevOps practices by combining an interactive web application with a fully automated CI/CD pipeline. Every code push triggers automated testing, security scanning, Docker containerization, and deployment to production.
 
+**Current Version:** 1.2.0 - Cloud Profiles & Global Leaderboard
+
 ### What Makes This Project Unique
 
 - ✅ **Full CI/CD Automation** - From commit to production in under 3 minutes
 - ✅ **Production-Grade Pipeline** - Includes testing, security scanning, and containerization
 - ✅ **Interactive Web App** - Engaging Wordle game showcasing frontend skills
+- ✅ **Cloud Database Integration** - Supabase PostgreSQL with RLS security
+- ✅ **Real-time Leaderboard** - Compete with players worldwide
 - ✅ **Infrastructure as Code** - Entire pipeline defined in version-controlled YAML
 - ✅ **Zero-Downtime Deployment** - Automated deployment to GitHub Pages
+- ✅ **Mobile Responsive Design** - Optimized for all device sizes
+
+---
+
+## 📍 Implementation Status
+
+### ✅ Phase 1: Core Game (v1.0.0) - COMPLETED
+
+- Classic Wordle gameplay mechanics
+- Physical & virtual keyboard support
+- Local stats tracking
+- Responsive UI design
+
+### ✅ Phase 2: DevOps Pipeline (v1.0.5) - COMPLETED
+
+- GitHub Actions CI/CD
+- Automated testing with Mocha
+- Security scanning with Trivy
+- Docker containerization
+- GitHub Pages deployment
+
+### ✅ Phase 3: Word Validation (v1.1.0) - COMPLETED
+
+- API-based word validation (170,000+ words)
+- Intelligent caching system
+- Bulletproof input handling
+- Performance optimization (<5ms cached lookups)
+
+### ✅ Phase 4: Cloud Features (v1.2.0) - COMPLETED
+
+- ☁️ Supabase PostgreSQL database integration
+- 👤 User profile system with custom avatars
+- 🏆 Global leaderboard (Max Streak & Win Rate tabs)
+- 🥇 Rank badges (Gold/Silver/Bronze for top 3)
+- 🔄 Smart stats sync (localStorage + cloud merge)
+- 📱 Mobile responsive design (circular icon buttons)
+- 🗑️ Profile deletion functionality
+
+### 🚧 Phase 5: Multiplayer (PLANNED)
+
+- WebSocket integration (Socket.io)
+- Real-time matchmaking
+- Room-based gameplay
+- Spectator mode
+- Friend system
 
 ---
 
@@ -49,10 +98,17 @@ This project demonstrates modern DevOps practices by combining an interactive we
 - 🎮 Classic Wordle gameplay - Guess the 5-letter word in 6 tries
 - 🎨 Smooth animations and visual feedback
 - 📊 Statistics tracking (games played, win rate, current streak)
-- 💾 Local storage for persistent stats
+- ☁️ **Cloud Database Integration** - Supabase PostgreSQL backend
+- 👤 **User Profiles** - Create profiles with custom avatars and save stats forever
+- 🏆 **Global Leaderboard** - Compete with players worldwide (Max Streak & Win Rate)
+- 🥇 **Rank Badges** - Gold/Silver/Bronze medals for top 3 players
+- 🔄 **Smart Stats Sync** - Auto-merges local + cloud stats (takes highest values)
+- 💾 Local storage fallback when offline
 - ⌨️ Physical and on-screen keyboard support
-- 📱 Fully responsive design (mobile-friendly)
+- 📱 **Mobile Responsive** - Circular icon buttons on mobile devices
 - 🎯 40+ word vocabulary
+- 🔒 **Smart Word Validation** - 170,000+ words via API with intelligent caching
+- 🛡️ **Bulletproof Input** - Multi-layer protection against spam and bugs
 
 ### DevOps Features
 
@@ -241,13 +297,24 @@ Permissions:
 ### Frontend
 
 - **HTML5** - Semantic markup
-- **CSS3** - Animations, Flexbox, Grid, Custom Properties
+- **CSS3** - Animations, Flexbox, Grid, Custom Properties, Mobile Responsive Design
 - **JavaScript (ES6+)** - Game logic, DOM manipulation, Local Storage API
+- **Supabase Client SDK** - Real-time database operations
+- **Free Dictionary API** - Word validation with 170,000+ words
+- **Local Caching** - Intelligent word validation caching for performance
 
 ### Testing
 
 - **Mocha** - Test framework
 - **NYC** - Code coverage reporting
+
+### Backend & Database
+
+- **Supabase** - PostgreSQL database (FREE tier)
+- **Row Level Security (RLS)** - Database access control
+- **Supabase Client SDK** - Real-time API operations
+- **Anonymous Auth** - Automatic user creation
+- **Profile System** - User claims with email/name/avatar
 
 ### DevOps & Infrastructure
 
@@ -256,6 +323,7 @@ Permissions:
 - **Nginx** - Web server (in container)
 - **Trivy** - Security scanning
 - **GitHub Pages** - Static site hosting
+- **GitHub Secrets** - Secure credential management (attempted)
 
 ### Development Tools
 
@@ -309,18 +377,26 @@ Permissions:
 ### Project Structure
 
 ```
-devops-cicd-pipeline-demo/
+wordle-automated-deployment/
 ├── .github/
 │   └── workflows/
-│       └── ci-cd-pipeline.yml    # CI/CD pipeline configuration
+│       ├── ci-cd-pipeline.yml    # Original CI/CD pipeline
+│       └── deploy.yml            # GitHub Pages deployment with secrets
 ├── tests/
 │   └── app.test.js               # Mocha test suite
 ├── screenshots/                   # Project screenshots
 ├── Dockerfile                     # Container configuration
-├── index.html                     # Main application file
+├── index.html                     # Main application file (modals, profiles, leaderboard)
+├── game.js                        # Core game logic & profile management
+├── config.js                      # Game configuration & release notes (v1.2.0)
+├── styles.css                     # Styling with mobile responsive design
+├── dictionary-service.js          # Word validation API with caching
+├── supabase-service.js            # Cloud database operations (HARDCODED CREDENTIALS)
 ├── package.json                   # Node.js dependencies
 ├── package-lock.json              # Dependency lock file
 ├── .gitignore                     # Git ignore rules
+├── DEPLOYMENT_GUIDE.md            # Deployment instructions
+├── GITHUB_SECRETS.md              # GitHub secrets configuration guide
 └── README.md                      # This file
 ```
 
@@ -503,12 +579,14 @@ describe("New Feature", function () {
 
 ### Planned Features
 
-#### Phase 1: Backend Integration
+#### Phase 1: Backend Integration ✅ **COMPLETED**
 
-- [ ] Node.js + Express backend
-- [ ] PostgreSQL database
-- [ ] User authentication (JWT)
-- [ ] RESTful API endpoints
+- [x] **Supabase PostgreSQL database** - Free cloud database with RLS
+- [x] **User profiles** - Display name, email, custom avatars
+- [x] **Anonymous user system** - Auto-creates users, can claim profiles later
+- [x] **RESTful API endpoints** - Via Supabase client SDK
+- [x] **Stats persistence** - Game history, streaks, win rates saved to cloud
+- [x] **Global leaderboard** - Real-time ranking system
 
 #### Phase 2: Multiplayer Mode
 
@@ -678,6 +756,62 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
 - [Mocha Testing Framework](https://mochajs.org/)
 - [Trivy Security Scanner](https://aquasecurity.github.io/trivy/)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Free Dictionary API](https://dictionaryapi.dev/)
+
+---
+
+## 📝 Release History
+
+### Version 1.2.0 - Cloud Profiles & Global Leaderboard (November 13, 2025)
+
+**Major Features:**
+
+- ☁️ Supabase PostgreSQL cloud database integration
+- 👤 User profile system with custom avatars (12 emoji options + custom URL)
+- 🏆 Global leaderboard with two ranking modes:
+  - Max Streak leaderboard
+  - Win Rate leaderboard
+- 🥇 Rank badges (Gold/Silver/Bronze) for top 3 players
+- 🔄 Smart stats synchronization (merges localStorage + cloud, keeps highest values)
+- 📱 Mobile responsive design with circular icon buttons
+- 🗑️ Profile deletion feature (return to anonymous mode)
+- 🔐 Secure credential management with GitHub Secrets (hardcoded for now)
+
+**Technical Improvements:**
+
+- Supabase client SDK integration
+- Row Level Security (RLS) policies for data protection
+- Anonymous user system with profile claiming
+- Real-time leaderboard updates
+- Profile view modal with comprehensive stats display
+
+### Version 1.1.0 - Bulletproof Input & Smart Validation (November 12, 2025)
+
+- 🔒 Smart Word Validation (170,000+ words via Free Dictionary API)
+- 🛡️ Bulletproof Input Handling (fixed Enter spam bug)
+- ⚡ Lightning-Fast Performance (0-5ms cached lookups)
+- 📋 Release Notes system
+- 🎯 Better UX with smoother animations
+- 🔧 Clean, modular code architecture
+
+### Version 1.0.5 - Performance & Stability (November 9, 2025)
+
+- ⚡ Optimized game board rendering
+- 🐛 Fixed keyboard event handling
+- 💾 Improved stats persistence
+- 🎨 Refined color schemes
+
+### Version 1.0.0 - Initial Release (November 8, 2025)
+
+- 🎮 Full Wordle gameplay with 6 attempts
+- ⌨️ Virtual and physical keyboard support
+- 📊 Game statistics tracking
+- 💾 Local storage persistence
+- 🎨 Beautiful UI with animations
+- 🚀 CI/CD pipeline with GitHub Actions
+- 🐳 Docker containerization
+- 🔒 Security scanning with Trivy
 
 ---
 
@@ -690,5 +824,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [Report Bug](https://github.com/FriesKnight/devops-cicd-pipeline-demo/issues) · [Request Feature](https://github.com/FriesKnight/devops-cicd-pipeline-demo/issues) · [View Demo](https://friesknight.github.io/devops-cicd-pipeline-demo/)
 
 </div>
-#   D e p l o y m e n t   w i t h   s e c r e t s   c o n f i g u r e d  
+#   D e p l o y m e n t   w i t h   s e c r e t s   c o n f i g u r e d 
+ 
  
