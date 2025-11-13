@@ -11,7 +11,8 @@
 // Initialize Supabase client
 // ⚠️ HARDCODED CREDENTIALS - WORKS IN PRODUCTION
 const SUPABASE_URL = "https://mfxvemoeszpotpsunkch.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1meHZlbW9lc3pwb3Rwc3Vua2NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE0NTg0NzAsImV4cCI6MjA0NzAzNDQ3MH0.jSOpHGYbZnQeQzFGJlDl30S3FJt81djB4HK4jUUHiTQ";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1meHZlbW9lc3pwb3Rwc3Vua2NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE0NTg0NzAsImV4cCI6MjA0NzAzNDQ3MH0.jSOpHGYbZnQeQzFGJlDl30S3FJt81djB4HK4jUUHiTQ";
 
 const isSupabaseConfigured = true;
 
@@ -23,7 +24,9 @@ if (isSupabaseConfigured && typeof window !== "undefined" && window.supabase) {
   console.log("✅ Supabase initialized - Cloud database active");
 } else {
   console.log("ℹ️ Supabase not configured - Using localStorage only");
-  console.log("💡 To enable cloud sync: Copy supabase-config.local.example.js to supabase-config.local.js and add your credentials");
+  console.log(
+    "💡 To enable cloud sync: Copy supabase-config.local.example.js to supabase-config.local.js and add your credentials"
+  );
 }
 
 // Get or create anonymous user
