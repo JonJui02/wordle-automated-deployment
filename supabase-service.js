@@ -9,24 +9,11 @@
 // 5. Replace YOUR_PROJECT and YOUR_ANON_KEY with your actual values
 
 // Initialize Supabase client
-// ⚠️ SECURITY NOTE:
-// - Real credentials are loaded from supabase-config.local.js (not committed to git)
-// - For production, credentials must be configured separately
-// - See supabase-config.local.example.js for setup instructions
+// ⚠️ HARDCODED CREDENTIALS - WORKS IN PRODUCTION
+const SUPABASE_URL = "https://mfxvemoeszpotpsunkch.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1meHZlbW9lc3pwb3Rwc3Vua2NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzE0NTg0NzAsImV4cCI6MjA0NzAzNDQ3MH0.jSOpHGYbZnQeQzFGJlDl30S3FJt81djB4HK4jUUHiTQ";
 
-let SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
-let SUPABASE_ANON_KEY = "eyJhbGc...YOUR_ANON_KEY_HERE";
-
-// Try to load credentials from local config file (if it exists)
-if (typeof SUPABASE_CONFIG !== 'undefined') {
-  SUPABASE_URL = SUPABASE_CONFIG.url;
-  SUPABASE_ANON_KEY = SUPABASE_CONFIG.anonKey;
-}
-
-// Check if Supabase is configured (not default placeholder values)
-const isSupabaseConfigured =
-  SUPABASE_URL !== "https://YOUR_PROJECT.supabase.co" &&
-  SUPABASE_ANON_KEY !== "eyJhbGc...YOUR_ANON_KEY_HERE";
+const isSupabaseConfigured = true;
 
 let supabase = null;
 

@@ -690,3 +690,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [Report Bug](https://github.com/FriesKnight/devops-cicd-pipeline-demo/issues) · [Request Feature](https://github.com/FriesKnight/devops-cicd-pipeline-demo/issues) · [View Demo](https://friesknight.github.io/devops-cicd-pipeline-demo/)
 
 </div>
+#   D e p l o y m e n t   w i t h   s e c r e t s   c o n f i g u r e d  
+ 
